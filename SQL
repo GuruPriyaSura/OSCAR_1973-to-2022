@@ -1,0 +1,73 @@
+--Dataset used: https://www.kaggle.com/datasets/pushpakhinglaspure/oscar-dataset
+--Oscar Academy Award-winning films 1927-2022
+
+SELECT *
+FROM oscars
+ORDER BY Year DESC
+
+-- Checking for nulls
+-- deleting them
+
+SELECT *
+FROM oscars
+WHERE Film IS NULL OR Year IS NULL OR Award IS NULL OR Nomination IS NULL
+
+DELETE FROM oscars
+WHERE F1 = 974
+
+-- The years were not cleaned properly
+-- Identified 21,28,29,30,31,32,33
+-- Replacing them by actual years
+
+SELECT *
+FROM oscars
+WHERE Year in (21,28,29,30,31,32,33)
+ORDER BY F1
+
+--Updating the year 21 by 2020
+-- And checking If It's done
+
+UPDATE oscars
+SET Year = 2020
+WHERE Year = 21
+
+SELECT *
+FROM oscars
+WHERE Year = 2020
+
+--Either use replace or case to set the data 
+
+--UPDATE oscars
+--SET Year = REPLACE(YEAR,'28','1928')
+--UPDATE oscars
+--SET Year = REPLACE(YEAR,'29','1929')
+--UPDATE oscars
+--SET Year = REPLACE(YEAR,'30','1930')
+
+UPDATE oscars
+SET Year = CASE Year
+WHEN '28' THEN '1928'
+WHEN '29' THEN '1929'
+WHEN '30' THEN '1930'
+WHEN '31' THEN '1931'
+WHEN '32' THEN '1932'
+WHEN '33' THEN '1933'
+ELSE YEAR
+END
+
+--Grouping of films by most awards won to least
+--Grouping of films by highest nominations to least
+
+SELECT Award,COUNT(Award) as Num_of_Films
+FROM oscars
+GROUP BY Award
+ORDER BY Award DESC
+
+SELECT Nomination,COUNT(Nomination) as Num_of_Films
+FROM oscars
+GROUP BY Nomination
+ORDER BY Nomination DESC
+
+SELECT *
+FROM oscars
+WHERE Nomination = 0
